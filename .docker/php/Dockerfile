@@ -2,6 +2,7 @@ FROM php:8.2-fpm-buster
 ARG TIMEZONE
 
 COPY php.ini /usr/local/etc/php/conf.d/docker-php-config.ini
+COPY php.ini /usr/local/etc/php/php.ini-development
 
 RUN apt-get update && apt-get install -y \
     gnupg \

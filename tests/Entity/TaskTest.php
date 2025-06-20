@@ -3,6 +3,7 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Task;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class TaskTest extends KernelTestCase
@@ -11,9 +12,11 @@ class TaskTest extends KernelTestCase
 
     public function getEntity():Task
     {
+        $user = new User();
         $task = new Task();
         $task->setTitle('Test title');
         $task->setContent('Test content');
+        $task->setAuthor($user);
 
         return $task;
     }

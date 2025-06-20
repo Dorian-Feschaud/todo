@@ -15,7 +15,8 @@ class AppFixtures extends Fixture
             static function () {
                 return [
                     'username' => 'admin',
-                    'email' => 'admin@example.com'
+                    'email' => 'admin@example.com',
+                    'roles' => ['ROLE_ADMIN']
                 ];
             }
         );

@@ -6,6 +6,7 @@ use App\Entity\Task;
 use App\Form\TaskType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +16,8 @@ class TaskController extends AbstractController
 {
 
     public function __construct(
-        private readonly EntityManagerInterface $em
+        private readonly EntityManagerInterface $em,
+        private readonly Security $security
     )
     {
         
@@ -28,7 +30,7 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/create', name: 'task_create')]
-    #[IsGranted('IS_AUTHENTICATED_ANONYMOUSLY')]
+    #[IsGranted('ROLE_USER')]
     public function createAction(Request $request)
     {
         $task = new Task();
@@ -37,6 +39,8 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $task->setAuthor($this->security->getUser());
 
             $this->em->persist($task);
             $this->em->flush();

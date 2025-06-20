@@ -20,7 +20,11 @@ class AppFixtures extends Fixture
             }
         );
         UserFactory::createMany(5);
-        TaskFactory::createMany(10);
+        TaskFactory::createMany(10, static function () {
+            return [
+                'author' => UserFactory::random()
+            ];
+        });
 
         $manager->flush();
     }

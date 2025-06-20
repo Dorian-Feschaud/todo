@@ -6,8 +6,10 @@ use App\Entity\Task;
 use App\Form\TaskType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class TaskController extends AbstractController
 {
@@ -26,6 +28,7 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/create', name: 'task_create')]
+    #[IsGranted('IS_AUTHENTICATED_ANONYMOUSLY')]
     public function createAction(Request $request)
     {
         $task = new Task();
@@ -79,6 +82,12 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/{id}/delete', name: 'task_delete')]
+    #[IsGranted(
+        new Expression(
+            'user.getId() === subject.getAuthor().getId()'
+        ),
+        subject: 'task',
+    )]
     public function deleteTaskAction(Task $task)
     {
         $this->em->remove($task);

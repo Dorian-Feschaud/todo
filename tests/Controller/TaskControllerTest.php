@@ -2,15 +2,39 @@
 
 namespace App\Tests\Controller;
 
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TaskControllerTest extends WebTestCase
 {
-    public function testNewTask(): void
+    protected function login(): KernelBrowser
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/tasks');
+        $client->request('GET', '/login');
         $client->followRedirects();
+
+        $client->submitForm('Se connecter', [
+            '_username' => 'admin',
+            '_password' => 'password'
+        ]);
+
+        return $client;
+    }
+
+    public function testWithoutLogin(): void
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+        $client->request('GET', '/tasks/create');
+
+        $this->assertRouteSame('login');
+    }
+
+    public function testNewTask(): void
+    {
+        $client = $this->login();
+        
+        $crawler = $client->request('GET', '/tasks');
 
         $nbDivInit = count($crawler->filter('div.thumbnail'));
 
@@ -31,9 +55,9 @@ class TaskControllerTest extends WebTestCase
 
     public function testNewTaskBlankTitle(): void
     {
-        $client = static::createClient();
-        $client->request('GET', '/tasks/create');
-        $client->followRedirects();
+        $client = $this->login();
+        
+        $crawler = $client->request('GET', '/tasks/create');
         
         $client->submitForm('Ajouter', [
             'task[content]' => 'test content'
@@ -44,9 +68,9 @@ class TaskControllerTest extends WebTestCase
 
     public function testNewTaskBlankContent(): void
     {
-        $client = static::createClient();
-        $client->request('GET', '/tasks/create');
-        $client->followRedirects();
+        $client = $this->login();
+        
+        $crawler = $client->request('GET', '/tasks/create');
         
         $client->submitForm('Ajouter', [
             'task[title]' => 'test title'
@@ -57,13 +81,13 @@ class TaskControllerTest extends WebTestCase
 
     public function testDeleteTask(): void
     {
-        $client = static::createClient();
+        $client = $this->login();
+        
         $crawler = $client->request('GET', '/tasks');
-        $client->followRedirects();
 
         $nbDivInit = count($crawler->filter('div.thumbnail'));
 
-        $form = $crawler->filter('div.thumbnail')->first()->filter('form')->last()->form();
+        $form = $crawler->filter('div.thumbnail')->last()->filter('form')->last()->form();
 
         $newCrawler = $client->submit($form);
 
@@ -77,9 +101,9 @@ class TaskControllerTest extends WebTestCase
 
     public function testToggleTask(): void
     {
-        $client = static::createClient();
+        $client = $this->login();
+        
         $crawler = $client->request('GET', '/tasks');
-        $client->followRedirects();
 
         $nbSpanRemoveInit = count($crawler->filter('span.glyphicon-remove'));
         $nbSpanOkInit = count($crawler->filter('span.glyphicon-ok'));
@@ -100,9 +124,9 @@ class TaskControllerTest extends WebTestCase
 
     public function testEditTask(): void
     {
-        $client = static::createClient();
+        $client = $this->login();
+        
         $crawler = $client->request('GET', '/tasks');
-        $client->followRedirects();
 
         $taskLink = $crawler->filter('div.thumbnail')->first()->filter('a')->first()->link();
 

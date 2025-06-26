@@ -20,10 +20,33 @@ class AppFixtures extends Fixture
                 ];
             }
         );
+        UserFactory::createOne(
+            static function () {
+                return [
+                    'username' => 'user',
+                    'email' => 'user@example.com',
+                    'roles' => ['ROLE_USER']
+                ];
+            }
+        );
+        UserFactory::createOne(
+            static function () {
+                return [
+                    'username' => 'anonyme',
+                    'email' => 'anonyme@example.com',
+                    'roles' => ['ROLE_USER']
+                ];
+            }
+        );
         UserFactory::createMany(5);
         TaskFactory::createMany(10, static function () {
             return [
                 'author' => UserFactory::random()
+            ];
+        });
+        TaskFactory::createMany(5, static function () {
+            return [
+                'author' => UserFactory::find(['username' => 'anonyme'])
             ];
         });
 

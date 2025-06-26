@@ -54,6 +54,7 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/{id}/edit', name: 'task_edit')]
+    #[IsGranted('ROLE_USER')]
     public function editAction(Task $task, Request $request)
     {
         $form = $this->createForm(TaskType::class, $task);
@@ -88,7 +89,8 @@ class TaskController extends AbstractController
     #[Route('/tasks/{id}/delete', name: 'task_delete')]
     #[IsGranted(
         new Expression(
-            'user.getId() === subject.getAuthor().getId()'
+            'user.getId() === subject.getAuthor().getId()
+            or (subject.getAuthor().getUsername() === "anonyme") and user.getUsername() === "admin"'
         ),
         subject: 'task',
     )]

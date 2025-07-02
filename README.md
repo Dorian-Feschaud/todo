@@ -57,3 +57,48 @@ docker-compose exec node yarn encore dev
 
 docker-compose exec php bin/console doctrine:database:create
 docker-compose exec php bin/console doctrine:migrations:migrate
+
+
+
+### Contribution
+
+### 1. Créer une nouvelle branche
+
+git checkout -b feature/nom-de-ta-feature
+
+Utilise un nom explicite :
+
+feature/ pour une nouvelle fonctionnalité
+fix/ pour une correction de bug
+
+### 2. Exécution des tests
+
+docker-compose exec php ./bin/phpunit
+
+Tous les tests doivent être au vert ✅
+
+### 3. Vérification avec PHPStan
+
+docker-compose exec php ./vendor/bin/phpstan analyse src
+docker-compose exec php ./vendor/bin/phpstan analyse tests
+
+Corrige les éventuelles erreurs remontées avant de continuer.
+
+### 4. Commit & push
+
+git add .
+git commit -m "nouvelle feature"
+git push origin feature/nom-de-ta-feature
+
+Indique clairement dans le message ce qui à été modifié et ajoute le numéro de l'issue si possible.
+
+### 5. Création de la Pull Request
+
+Depuis GitHub :
+
+Va sur le dépôt
+Clique sur "Compare & pull request"
+Donne un titre clair et une description précise
+Laisse des commentaires si nécessaire pour expliquer tes choix
+Attribue un ou plusieurs relecteurs
+Une PR ne doit être mergée qu'après validation et si les tests passent ✅

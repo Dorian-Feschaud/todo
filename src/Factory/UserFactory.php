@@ -31,8 +31,10 @@ final class UserFactory extends PersistentProxyObjectFactory
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
      *
      * @todo add your default values here
+     * 
+     * @return array<mixed>
      */
-    protected function defaults(): array|callable
+    protected function defaults(): array
     {
         return [
             'email' => self::faker()->email(),
@@ -49,9 +51,7 @@ final class UserFactory extends PersistentProxyObjectFactory
     {
         return $this
             ->afterInstantiate(function(User $user) {
-                if ($this->passwordHasher !== null) {
-                    $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPassword()));
-                }
+                $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPassword()));
             })
         ;
     }

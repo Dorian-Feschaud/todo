@@ -40,53 +40,53 @@ class Task
         $this->isDone = false;
     }
 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getCreatedAt()
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt): Task
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getTitle()
+    public function getTitle(): String
     {
         return $this->title;
     }
 
-    public function setTitle($title)
+    public function setTitle(String $title): Task
     {
         $this->title = $title;
 
         return $this;
     }
 
-    public function getContent()
+    public function getContent(): String
     {
         return $this->content;
     }
 
-    public function setContent($content)
+    public function setContent(String $content): Task
     {
         $this->content = $content;
 
         return $this;
     }
 
-    public function isDone()
+    public function isDone(): bool
     {
         return $this->isDone;
     }
 
-    public function toggle($flag)
+    public function toggle(bool $flag): Task
     {
         $this->isDone = $flag;
 

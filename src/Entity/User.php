@@ -56,17 +56,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->tasks = new ArrayCollection();
     }
 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getUsername()
+    public function getUsername(): String
     {
         return $this->username;
     }
 
-    public function setUsername($username)
+    public function setUsername(String $username): User
     {
         $this->username = $username;
 
@@ -88,12 +88,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getEmail()
+    public function getEmail(): String
     {
         return $this->email;
     }
 
-    public function setEmail($email)
+    public function setEmail(String $email): User
     {
         $this->email = $email;
 

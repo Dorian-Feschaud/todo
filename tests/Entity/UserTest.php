@@ -4,11 +4,14 @@ namespace App\Tests\Entity;
 
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\ConstraintViolation;
 
 class UserTest extends KernelTestCase
 {
-    private $validator;
-    private $passwordHasher;
+    private ValidatorInterface $validator;
+    private UserPasswordHasherInterface $passwordHasher;
 
     public function getEntity():User
     {

@@ -5,10 +5,12 @@ namespace App\Tests\Entity;
 use App\Entity\Task;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\ConstraintViolation;
 
 class TaskTest extends KernelTestCase
 {
-    private $validator;
+    private ValidatorInterface $validator;
 
     public function getEntity():Task
     {

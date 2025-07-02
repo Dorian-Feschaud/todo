@@ -3,19 +3,20 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
     #[Route('/', name: 'homepage')]
-    public function indexAction()
+    public function indexAction(): Response
     {
         return $this->render('default/index.html.twig');
     }
 
     #[Route('/login', name: 'login')]
-    public function loginAction(AuthenticationUtils $authenticationUtils)
+    public function loginAction(AuthenticationUtils $authenticationUtils): Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
@@ -27,7 +28,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/logout', name: 'logout')]
-    public function logoutCheck()
+    public function logoutCheck(): void
     {
         // This code is never executed.
     }

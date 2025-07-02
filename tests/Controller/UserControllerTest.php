@@ -214,4 +214,45 @@ class UserControllerTest extends WebTestCase
         $this->assertRouteSame('user_create');
         $this->assertSelectorTextContains('li', 'There is already an account with this email');
     }
+
+    public function testUserListUnauthentified(): void
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+        $client->request('GET', '/users');
+
+        $this->assertRouteSame('login');
+    }
+
+    public function testUserListRoleAdmin(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/login');
+        $client->followRedirects();
+        
+        $client->submitForm('Se connecter', [
+            '_username' => 'admin',
+            '_password' => 'password'
+        ]);
+
+        $client->request('GET', '/users');
+
+        $this->assertRouteSame('user_list');
+    }
+
+    public function testUserListRoleUser(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/login');
+        $client->followRedirects();
+        
+        $client->submitForm('Se connecter', [
+            '_username' => 'user',
+            '_password' => 'password'
+        ]);
+
+        $client->request('GET', '/users');
+
+        $this->assertRouteSame('user_list');
+    }
 }

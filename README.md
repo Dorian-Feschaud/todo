@@ -60,7 +60,7 @@ docker-compose exec php bin/console doctrine:migrations:migrate
 
 
 
-### Contribution
+## 🤝 Contribution
 
 ### 1. Créer une nouvelle branche
 
